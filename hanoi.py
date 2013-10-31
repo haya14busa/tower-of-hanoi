@@ -8,13 +8,16 @@
 #
 
 import sys
+from time import sleep
+from subprocess import call
 
 class Hanoi():
     def __init__(self, towerSize):
         self.towerSize = towerSize
+        self.towerWidth = towerSize * 2 - 1 # For Visual
         self.bars = [
                 #range(start, stop = None, step = 1)
-                range(towerSize, 0, -1), # range(
+                range(towerSize, 0, -1),
                 [],
                 []
         ]
@@ -23,8 +26,10 @@ class Hanoi():
         # Display Option
         self.dispStep      = 1
         self.dispOperation = 1
-        self.dispList      = 1
-        self.dispVisual    = 0
+        self.dispList      = 0
+        self.dispVisual    = 1
+
+        self.interval      = 0 # Second
 
     ''' View '''
     def show(self, from_, to):
@@ -41,7 +46,32 @@ class Hanoi():
         print '{from_} -> {to}'.format(
                 from_=self.barnames[from_],to=self.barnames[to])
     def showVisual(self):
-        pass
+        #towerHeight = max(
+        #        len(self.bars[0]),
+        #        len(self.bars[1]),
+        #        len(self.bars[2])
+        #) + 1
+        towerHeight = self.towerSize + 1
+
+        for i in xrange(towerHeight, 0, -1):
+            row = ''
+            for bar in self.bars:
+                if len(bar) > i-1:
+                    row += ('-' * (bar[i-1] * 2 -1)).center(self.towerWidth) + ' '
+                else:
+                    row += '|'.center(self.towerWidth) + ' '
+            print row
+        bottom = ''
+        for name in self.barnames:
+            bottom += '[{name}]'.format(
+                    name=name).center(self.towerWidth) + ' '
+        print bottom
+
+        if self.interval > 0:
+            sleep(self.interval)
+            call('clear')
+
+
     def showList(self):
         for i in xrange(3):
             print '{name} : {content}'.format(
@@ -52,8 +82,11 @@ class Hanoi():
     ''' End of View '''
 
     def start(self):
-        self.showList()
+        call('clear')
+        print '###  Tower Of Hanoi ###\n'
+        self.showVisual()
         self.solve(self.towerSize,0,1,2)
+        print 'Total Step: ' + str(self.step)
 
     def move(self, from_, to):
         self.bars[to].append(
@@ -101,4 +134,5 @@ def inputHanoiSize():
 if __name__ == '__main__':
     size = getHanoiSize()
     hanoi = Hanoi(size)
+    hanoi.interval = 1
     hanoi.start()
