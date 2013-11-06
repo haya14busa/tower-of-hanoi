@@ -31,7 +31,7 @@ class Hanoi():
 
         self.interval      = 0 # Second
 
-    ''' View '''
+    ### View ####################
     def show(self, from_, to):
         if self.dispStep == 1:
             self.showStep()
@@ -46,11 +46,6 @@ class Hanoi():
         print '{from_} -> {to}'.format(
                 from_=self.barnames[from_],to=self.barnames[to])
     def showVisual(self):
-        #towerHeight = max(
-        #        len(self.bars[0]),
-        #        len(self.bars[1]),
-        #        len(self.bars[2])
-        #) + 1
         towerHeight = self.towerSize + 1
 
         for i in xrange(towerHeight, 0, -1):
@@ -79,7 +74,7 @@ class Hanoi():
                     content=self.bars[i])
     def showStep(self):
         print '### Step : {step} ###'.format(step=self.step)
-    ''' End of View '''
+    ### End of View ####################
 
     def start(self):
         call('clear')
